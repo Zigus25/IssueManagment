@@ -7,13 +7,11 @@
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="LoginInput" HorizontalAlignment="Left" Margin="225,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345"/>
-        <RadioButton x:Name="githubRadio" Content="GitHub" HorizontalAlignment="Left" Margin="40,50,0,0" VerticalAlignment="Top" IsChecked="True"/>
-        <RadioButton x:Name="gitlubRadio" Content="GitLab" HorizontalAlignment="Left" Margin="40,70,0,0" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="passwdInput" HorizontalAlignment="Left" Margin="225,145,0,0" VerticalAlignment="Top" Width="345"/>
+        <RadioButton x:Name="githubRadio" Content="GitHub" HorizontalAlignment="Left" Margin="62,37,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <RadioButton x:Name="gitlubRadio" Content="GitLab" HorizontalAlignment="Left" Margin="62,57,0,0" VerticalAlignment="Top"/>
         <Button x:Name="login" Content="Autoryzuj" HorizontalAlignment="Center" VerticalAlignment="Center" Height="38" Width="159" Click="login_Click"/>
-        <Label Content="Login:" HorizontalAlignment="Center" Margin="0,57,0,0" VerticalAlignment="Top"/>
-        <Label Content="Hasło:" HorizontalAlignment="Center" Margin="0,115,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TokenInput" HorizontalAlignment="Center" Margin="0,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="462"/>
+        <TextBox x:Name="LoginInput" HorizontalAlignment="Center" Margin="0,110,0,0" TextWrapping="Wrap" Text="Zigus25" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>

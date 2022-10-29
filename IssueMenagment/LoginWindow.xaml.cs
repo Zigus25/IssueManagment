@@ -1,22 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace IssueMenagment
 {
-    /// <summary>
-    /// Logika interakcji dla klasy LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
         public LoginWindow()
@@ -26,10 +12,26 @@ namespace IssueMenagment
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            //TODO Authorize user
-            var newForm = new MainWindow();
-            newForm.Show();
-            this.Close();
+            Authorize aout = new Authorize();
+            var login = LoginInput.Text;
+            var token = TokenInput.Text;
+            var link = "https://api.github.com/user";
+
+            var res = aout.authentication(login,token, link);
+            if (res != "error")
+            {
+                dynamic d = JObject.Parse(res);
+                if(d.login == login)
+                {
+                    var newForm = new MainWindow();
+                    newForm.DescInpute.Text = "a";
+                    newForm.Show();
+                    this.Close();
+                }
+            }
+
+
+            
         }
     }
 }
