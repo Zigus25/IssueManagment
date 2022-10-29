@@ -20,9 +20,17 @@ namespace IssueMenagment
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        string Login;
+        public MainWindow(string login)
         {
+            Login = login;
             InitializeComponent();
+            GithubLogic gith = new GithubLogic();
+            var repos = gith.getRepos(Login);
+            foreach (string name in repos)
+            {
+                ReposChoose.Items.Add(name);
+            }
         }
     }
 }
