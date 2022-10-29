@@ -9,6 +9,6 @@ namespace IssueMenagment
     internal interface IssueProvider
     {
         List<String> getRepos(string login);
-        List<String> getIssues();
+        List<String> getIssues(string login, string repo);
     }
 }

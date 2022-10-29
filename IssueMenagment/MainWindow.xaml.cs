@@ -21,15 +21,25 @@ namespace IssueMenagment
     public partial class MainWindow : Window
     {
         string Login;
+        GithubLogic gith = new GithubLogic();
         public MainWindow(string login)
         {
             Login = login;
             InitializeComponent();
-            GithubLogic gith = new GithubLogic();
             var repos = gith.getRepos(Login);
             foreach (string name in repos)
             {
                 ReposChoose.Items.Add(name);
+            }
+        }
+
+        private void ReposChoose_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IssueBox.Items.Clear();
+            var issues = gith.getIssues(Login, ReposChoose.SelectedValue.ToString());
+            foreach (string name in issues)
+            {
+                IssueBox.Items.Add(name);
             }
         }
     }

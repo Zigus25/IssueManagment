@@ -12,9 +12,31 @@ namespace IssueMenagment
 {
     internal class GithubLogic : IssueProvider
     {
-        public List<string> getIssues()
+        public List<string> getIssues(string login, string repo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Get, "https://api.github.com/repos/"+login+"/"+repo+"/issues");
+                    request.Headers.Add("User-Agent", "IssueMenagment");
+
+                    var res = client.Send(request);
+                    var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
+                    List<string> issues = new List<string>();
+                    foreach (dynamic ob in d)
+                    {
+                        issues.Add((string)ob.title);
+                    }
+                    return (issues);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+                return null;
+            }
         }
 
         public List<string> getRepos(string login)
@@ -33,7 +55,6 @@ namespace IssueMenagment
                     {
                         repos.Add((string)ob.name);
                     }
-                    MessageBox.Show(repos.Count.ToString());
                     return (repos);
                 }
             }
@@ -41,8 +62,8 @@ namespace IssueMenagment
             {
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
+                return null;
             }
-            throw new NotImplementedException();
         }
     }
 }
