@@ -15,12 +15,10 @@ using System.Windows.Shapes;
 
 namespace IssueMenagment
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         string Login;
+        List<Issue> issues;
         GithubLogic gith = new GithubLogic();
         public MainWindow(string login)
         {
@@ -36,10 +34,32 @@ namespace IssueMenagment
         private void ReposChoose_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             IssueBox.Items.Clear();
-            var issues = gith.getIssues(Login, ReposChoose.SelectedValue.ToString());
-            foreach (string name in issues)
+            issues = gith.getIssues(Login, ReposChoose.SelectedValue.ToString());
+            if(issues != null)
             {
-                IssueBox.Items.Add(name);
+                foreach (Issue issu in issues)
+                {
+                    IssueBox.Items.Add(issu.title);
+                }
+            }
+            else
+            {
+                IssueBox.Items.Add("brak Issue do wyświetlenia");
+            }
+        }
+
+        private void IssueBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var i = IssueBox.SelectedIndex;
+            try
+            {
+                NameInpute.Text = issues[i].title;
+                DescInpute.Text = issues[i].body;
+            }
+            catch (Exception ex)
+            {
+                NameInpute.Text = "";
+                DescInpute.Text = "";
             }
         }
     }

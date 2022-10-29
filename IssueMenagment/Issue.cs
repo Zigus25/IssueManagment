@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace IssueMenagment
 {
-    internal interface IssueProvider
+    public class Issue
     {
-        List<String> getRepos(string login);
-        List<Issue> getIssues(string login, string repo);
+        public int number { get; set; }
+        public string title { get; set; }
+        public string body { get; set; }
+
     }
 }

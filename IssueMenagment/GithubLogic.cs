@@ -12,7 +12,7 @@ namespace IssueMenagment
 {
     internal class GithubLogic : IssueProvider
     {
-        public List<string> getIssues(string login, string repo)
+        public List<Issue> getIssues(string login, string repo)
         {
             try
             {
@@ -23,12 +23,12 @@ namespace IssueMenagment
 
                     var res = client.Send(request);
                     var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
-                    List<string> issues = new List<string>();
+                    List<Issue> issues = new List<Issue>();
                     foreach (dynamic ob in d)
                     {
-                        issues.Add((string)ob.title);
+                        issues.Add(new Issue { number = (int)ob.number, title = (string)ob.title, body = (string)ob.body});
                     }
-                    return (issues);
+                    return issues;
                 }
             }
             catch (HttpRequestException ex)
