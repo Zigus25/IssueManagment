@@ -13,6 +13,6 @@
         <Button x:Name="Save" Content="Save" HorizontalAlignment="Left" Margin="650,360,0,0" VerticalAlignment="Top" Height="45" Width="100" Click="Save_Click"/>
         <ComboBox x:Name="ReposChoose" HorizontalAlignment="Left" Margin="18,17,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ReposChoose_SelectionChanged"/>
         <Button x:Name="ExportujButton" Content="Export" HorizontalAlignment="Left" Margin="690,12,0,0" VerticalAlignment="Top" Width="69" Click="ExportujButton_Click"/>
-        <Button x:Name="ImportButton" Content="Import" HorizontalAlignment="Left" Margin="690,35,0,0" VerticalAlignment="Top" Width="69"/>
+        <Button x:Name="ImportButton" Content="Import" HorizontalAlignment="Left" Margin="690,35,0,0" VerticalAlignment="Top" Width="69" Click="ImportButton_Click"/>
     </Grid>
 </Window>

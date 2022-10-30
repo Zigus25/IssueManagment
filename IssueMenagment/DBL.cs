@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace IssueMenagment
 {
@@ -15,6 +16,20 @@ namespace IssueMenagment
                     col.Insert(issue);
                 }
             }
+        }
+        public List<Issue> importDB(string path)
+        {
+            List<Issue> issues = new List<Issue>();
+            using (var db = new LiteDatabase(path))
+            {
+                var col = db.GetCollection<Issue>("Issues");
+                var res = col.FindAll();
+                foreach (var issue in res)
+                {
+                    issues.Add(issue);
+                }
+            }
+            return issues;
         }
     }
 }

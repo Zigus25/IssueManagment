@@ -43,7 +43,7 @@ namespace IssueMenagment
         private void ExportujButton_Click(object sender, RoutedEventArgs e)
         {
             //TODO doać wybór ścieżki
-            new DBL().createDB(@"C:\\Users\\zigus\\Downloads\Issues.db",issues);
+            new DBL().createDB(@"C:\Users\zigus\Downloads\Issues.db",issues);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -65,14 +65,24 @@ namespace IssueMenagment
             issues = gith.getIssues(ReposChoose.SelectedValue.ToString());
             if (issues != null)
             {
-                foreach (Issue issu in issues)
+                foreach (Issue issue in issues)
                 {
-                    IssueBox.Items.Add(issu.title);
+                    IssueBox.Items.Add(issue.title);
                 }
             }
             else
             {
                 IssueBox.Items.Add("brak Issue do wyświetlenia");
+            }
+        }
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            DBL dbl = new DBL();
+            List<Issue> iss = dbl.importDB(@"C:\Users\zigus\Downloads\Issues.db");
+            foreach (Issue issue in iss)
+            {
+                IssueBox.Items.Add(issue.title);
             }
         }
     }
