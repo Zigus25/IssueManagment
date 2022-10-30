@@ -12,7 +12,7 @@ namespace IssueMenagment
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            Authorize aout = new Authorize();
+            GithubLogic aout = new GithubLogic();
             var login = LoginInput.Text;
             var token = TokenInput.Text;
             var link = "https://api.github.com/user";
@@ -23,7 +23,7 @@ namespace IssueMenagment
                 dynamic d = JObject.Parse(res);
                 if(d.login == login)
                 {
-                    var newForm = new MainWindow(login,token);
+                    var newForm = new MainWindow();
                     newForm.Show();
                     this.Close();
                 }

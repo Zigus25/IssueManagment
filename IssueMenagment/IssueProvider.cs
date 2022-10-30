@@ -8,8 +8,8 @@ namespace IssueMenagment
 {
     internal interface IssueProvider
     {
-        List<String> getRepos(string login);
-        List<Issue> getIssues(string login, string repo);
-        void Issue(string login, string repo, int number, string title, string descr, string token);
+        List<String> getRepos();
+        List<Issue> getIssues(string repo);
+        void Issue(string repo, int number, string title, string descr);
     }
 }

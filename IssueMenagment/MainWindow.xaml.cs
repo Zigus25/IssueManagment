@@ -1,31 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace IssueMenagment
 {
     public partial class MainWindow : Window
     {
-        string Login,Token;
         List<Issue> issues;
         GithubLogic gith = new GithubLogic();
-        public MainWindow(string login,string token)
+        public MainWindow()
         {
-            Login = login;
-            Token = token;
             InitializeComponent();
-            var repos = gith.getRepos(Login);
+            var repos = gith.getRepos();
             foreach (string name in repos)
             {
                 ReposChoose.Items.Add(name);
@@ -34,19 +21,7 @@ namespace IssueMenagment
 
         private void ReposChoose_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IssueBox.Items.Clear();
-            issues = gith.getIssues(Login, ReposChoose.SelectedValue.ToString());
-            if(issues != null)
-            {
-                foreach (Issue issu in issues)
-                {
-                    IssueBox.Items.Add(issu.title);
-                }
-            }
-            else
-            {
-                IssueBox.Items.Add("brak Issue do wyświetlenia");
-            }
+            refeshIssueBox();
         }
 
         private void IssueBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -64,6 +39,11 @@ namespace IssueMenagment
             }
         }
 
+        private void ExportujButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             int num = -1;
@@ -71,7 +51,27 @@ namespace IssueMenagment
             {
                 num = issues[IssueBox.SelectedIndex].number;
             }
-            gith.Issue(Login,ReposChoose.SelectedValue.ToString(),num,NameInpute.Text,DescInpute.Text,Token);
+            gith.Issue(ReposChoose.SelectedValue.ToString(),num,NameInpute.Text,DescInpute.Text);
+            NameInpute.Text = "";
+            DescInpute.Text = "";
+            refeshIssueBox();
+        }
+
+        public void refeshIssueBox()
+        {
+            IssueBox.Items.Clear();
+            issues = gith.getIssues(ReposChoose.SelectedValue.ToString());
+            if (issues != null)
+            {
+                foreach (Issue issu in issues)
+                {
+                    IssueBox.Items.Add(issu.title);
+                }
+            }
+            else
+            {
+                IssueBox.Items.Add("brak Issue do wyświetlenia");
+            }
         }
     }
 }
