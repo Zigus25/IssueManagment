@@ -10,5 +10,7 @@ namespace IssueMenagment
     {
         List<String> getRepos(string login);
         List<Issue> getIssues(string login, string repo);
+        void updateIssue(string login, string repo, int number);
+        void createIssue(string login, string repo, string title, string descr);
     }
 }

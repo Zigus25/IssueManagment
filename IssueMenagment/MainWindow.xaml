@@ -10,7 +10,7 @@
         <ListBox x:Name="IssueBox" d:ItemsSource="{d:SampleData ItemCount=120}" Margin="0,46,636,0" SelectionChanged="IssueBox_SelectionChanged"/>
         <TextBox x:Name="NameInpute" HorizontalAlignment="Left" Margin="355,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325"/>
         <TextBox x:Name="DescInpute" HorizontalAlignment="Left" Margin="355,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" Height="144"/>
-        <Button x:Name="Save" Content="Save" HorizontalAlignment="Left" Margin="690,380,0,0" VerticalAlignment="Top" Height="45" Width="100"/>
+        <Button x:Name="Save" Content="Save" HorizontalAlignment="Left" Margin="690,380,0,0" VerticalAlignment="Top" Height="45" Width="100" Click="Save_Click"/>
         <ComboBox x:Name="ReposChoose" HorizontalAlignment="Left" Margin="18,17,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ReposChoose_SelectionChanged"/>
     </Grid>
 </Window>

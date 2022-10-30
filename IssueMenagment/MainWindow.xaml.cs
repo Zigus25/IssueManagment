@@ -59,8 +59,13 @@ namespace IssueMenagment
             catch (Exception ex)
             {
                 NameInpute.Text = "";
-                DescInpute.Text = "";
+                DescInpute.Text = ""    ;
             }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            gith.createIssue(Login,ReposChoose.SelectedValue.ToString(),NameInpute.Text,DescInpute.Text);
         }
     }
 }
