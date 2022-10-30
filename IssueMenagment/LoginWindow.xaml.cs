@@ -12,25 +12,29 @@ namespace IssueMenagment
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            GithubLogic aout = new GithubLogic();
-            var login = LoginInput.Text;
-            var token = TokenInput.Text;
-            var link = "https://api.github.com/user";
-
-            var res = aout.authentication(login,token, link);
-            if (res != "error")
+            if(LoginInput.Text != ""&& TokenInput.Text != "")
             {
-                dynamic d = JObject.Parse(res);
-                if(d.login == login)
+                GithubLogic aout = new GithubLogic();
+                var login = LoginInput.Text;
+                var token = TokenInput.Text;
+                var link = "https://api.github.com/user";
+
+                var res = aout.authentication(login, token, link);
+                if (res != "error")
                 {
-                    var newForm = new MainWindow();
-                    newForm.Show();
-                    this.Close();
+                    dynamic d = JObject.Parse(res);
+                    if (d.login == login)
+                    {
+                        var newForm = new MainWindow(aout);
+                        newForm.Show();
+                        this.Close();
+                    }
                 }
             }
-
-
-            
+            else
+            {
+                ErrorMess.Content = "Podaj login i token";
+            }
         }
     }
 }

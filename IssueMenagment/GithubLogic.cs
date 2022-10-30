@@ -1,22 +1,18 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace IssueMenagment
 {
-    internal class GithubLogic : IssueProvider
+    public class GithubLogic : IssueProvider
     {
-        string Login, Token;
+        public string Login, Token;
         public string authentication(string login, string token, string link)
         {
+            Login = login;
+            Token = token;
             try
             {
                 using (var client = new HttpClient())
@@ -30,8 +26,6 @@ namespace IssueMenagment
                     var res = client.Send(request);
                     return (res.Content.ReadAsStringAsync().Result);
                 }
-                Login = login;
-                Token = token;
             }
             catch (HttpRequestException ex)
             {

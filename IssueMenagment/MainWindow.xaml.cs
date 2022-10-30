@@ -8,9 +8,10 @@ namespace IssueMenagment
     public partial class MainWindow : Window
     {
         List<Issue> issues;
-        GithubLogic gith = new GithubLogic();
-        public MainWindow()
+        GithubLogic gith;
+        public MainWindow(GithubLogic git)
         {
+            gith = git;
             InitializeComponent();
             var repos = gith.getRepos();
             foreach (string name in repos)
@@ -41,7 +42,8 @@ namespace IssueMenagment
 
         private void ExportujButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //TODO doać wybór ścieżki
+            new DBL().createDB(@"C:\\Users\\zigus\\Downloads\Issues.db",issues);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

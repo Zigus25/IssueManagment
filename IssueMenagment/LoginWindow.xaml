@@ -11,7 +11,10 @@
         <RadioButton x:Name="gitlabRadio" Content="GitLab" HorizontalAlignment="Left" Margin="62,57,0,0" VerticalAlignment="Top" GroupName="Providers"/>
         <Button x:Name="login" Content="Autoryzuj" HorizontalAlignment="Center" VerticalAlignment="Center" Height="38" Width="159" Click="login_Click"/>
         <TextBox x:Name="TokenInput" HorizontalAlignment="Center" Margin="0,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="462"/>
-        <TextBox x:Name="LoginInput" HorizontalAlignment="Center" Margin="0,110,0,0" TextWrapping="Wrap" Text="Zigus25" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="LoginInput" HorizontalAlignment="Center" Margin="0,110,0,0" TextWrapping="Wrap" Text="Zigus25" VerticalAlignment="Top" Width="159"/>
+        <Label Content="Login:" HorizontalAlignment="Center" Margin="-198,105,0,0" VerticalAlignment="Top"/>
+        <Label Content="Token:" HorizontalAlignment="Center" Margin="-498,147,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="ErrorMess" Content="" HorizontalAlignment="Center" Margin="0,258,0,0" VerticalAlignment="Top" Foreground="Red"/>
 
     </Grid>
 </Window>
