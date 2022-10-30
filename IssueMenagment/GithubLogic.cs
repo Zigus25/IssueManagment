@@ -14,29 +14,6 @@ namespace IssueMenagment
 {
     internal class GithubLogic : IssueProvider
     {
-        public void createIssue(string login, string repo, string title, string descr)
-        {
-            Exception e = new Exception();
-            try
-            {
-                using (var clinet = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Post, "https://api.github.com/repos/"+login+"/"+repo+"/issues");
-                    var password = "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";
-                    string encoded = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(login + ":" + password));
-                    request.Headers.Add("Authorization", "Basic " + encoded);
-                    request.Headers.Add("User-Agent", "IssueMenagment");
-                    request.Content = new StringContent("{\"title\":\""+title+"\",\"body\":\""+descr+"\"}", Encoding.UTF8, "application/json");
-                    clinet.Send(request);
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
-
         public List<Issue> getIssues(string login, string repo)
         {
             try
@@ -91,9 +68,30 @@ namespace IssueMenagment
             }
         }
 
-        public void updateIssue(string login, string repo, int number)
+        public void Issue(string login, string repo, int number, string title, string descr, string token)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string url = "https://api.github.com/repos/" + login + "/" + repo + "/issues";
+                if (number != -1)
+                {
+                    url = url+ "\\" + number;
+                }
+                using (var clinet = new HttpClient())
+                {
+                    var request = new HttpRequestMessage(HttpMethod.Post, url);
+                    string encoded = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(login + ":" + token));
+                    request.Headers.Add("Authorization", "Basic " + encoded);
+                    request.Headers.Add("User-Agent", "IssueMenagment");
+                    request.Content = new StringContent("{\"title\":\"" + title + "\",\"body\":\"" + descr + "\"}", Encoding.UTF8, "application/json");
+                    clinet.Send(request);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
         }
     }
 }

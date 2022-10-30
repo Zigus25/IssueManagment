@@ -23,7 +23,7 @@ namespace IssueMenagment
                 dynamic d = JObject.Parse(res);
                 if(d.login == login)
                 {
-                    var newForm = new MainWindow(login);
+                    var newForm = new MainWindow(login,token);
                     newForm.Show();
                     this.Close();
                 }

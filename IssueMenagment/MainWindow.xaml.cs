@@ -17,12 +17,13 @@ namespace IssueMenagment
 {
     public partial class MainWindow : Window
     {
-        string Login;
+        string Login,Token;
         List<Issue> issues;
         GithubLogic gith = new GithubLogic();
-        public MainWindow(string login)
+        public MainWindow(string login,string token)
         {
             Login = login;
+            Token = token;
             InitializeComponent();
             var repos = gith.getRepos(Login);
             foreach (string name in repos)
@@ -65,7 +66,12 @@ namespace IssueMenagment
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            gith.createIssue(Login,ReposChoose.SelectedValue.ToString(),NameInpute.Text,DescInpute.Text);
+            int num = -1;
+            if(IssueBox.SelectedIndex != -1)
+            {
+                num = issues[IssueBox.SelectedIndex].number;
+            }
+            gith.Issue(Login,ReposChoose.SelectedValue.ToString(),num,NameInpute.Text,DescInpute.Text,Token);
         }
     }
 }
