@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace IssueMenagment
@@ -13,7 +15,7 @@ namespace IssueMenagment
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            if(LoginInput.Text != ""&& TokenInput.Text != "")
+            if((LoginInput.Text != ""&& TokenInput.Text != "")|| provider== "DataBase")
             {
                 var login = LoginInput.Text;
                 var token = TokenInput.Text;
@@ -27,7 +29,7 @@ namespace IssueMenagment
                             dynamic d = JObject.Parse(resGH);
                             if (d.login == login)
                             {
-                                var newForm = new MainWindow(aoutGH);
+                                var newForm = new MainWindow(aoutGH, provider);
                                 newForm.Show();
                                 this.Close();
                             }
@@ -41,10 +43,22 @@ namespace IssueMenagment
                             dynamic d = JObject.Parse(resGL);
                             if (d.username == login)
                             {
-                                var newForm = new MainWindow(aoutGL);
+                                var newForm = new MainWindow(aoutGL, provider);
                                 newForm.Show();
                                 this.Close();
                             }
+                        }
+                        break;
+                    case "DataBase":
+                        OpenFileDialog ofd = new OpenFileDialog();
+                        ofd.ShowDialog();
+                        DBL dbl = new DBL();
+                        var res = dbl.authentication(@"C:\Users\zigus\Downloads\Issues.db", "");
+                        if(res == "Istnieje")
+                        {
+                            var newForm = new MainWindow(dbl, provider);
+                            newForm.Show();
+                            this.Close();
                         }
                         break;
                 }
@@ -57,12 +71,38 @@ namespace IssueMenagment
 
         private void githubRadio_Checked(object sender, RoutedEventArgs e)
         {
-            provider = "GitHub";
+            if (provider != "GitHub")
+            {
+                provider = "GitHub";
+                LoginInput.Visibility = Visibility.Visible;
+                TokenInput.Visibility = Visibility.Visible;
+                LoginLabel.Visibility = Visibility.Visible;
+                TokenLabel.Visibility = Visibility.Visible;
+            }
         }
 
         private void gitlabRadio_Checked(object sender, RoutedEventArgs e)
         {
-            provider = "GitLab";
+            if (provider != "GitLab")
+            {
+                provider = "GitLab";
+                LoginInput.Visibility = Visibility.Visible;
+                TokenInput.Visibility = Visibility.Visible;
+                LoginLabel.Visibility = Visibility.Visible;
+                TokenLabel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void OflineButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (provider != "DataBase")
+            {
+                provider = "DataBase";
+                LoginInput.Visibility = Visibility.Collapsed;
+                TokenInput.Visibility = Visibility.Collapsed;
+                LoginLabel.Visibility = Visibility.Collapsed;
+                TokenLabel.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

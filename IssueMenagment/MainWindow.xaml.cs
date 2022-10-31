@@ -10,8 +10,9 @@ namespace IssueMenagment
         List<Repo> repos = new List<Repo>();
         List<Issue> issues;
         IssueProvider gith;
-        public MainWindow(IssueProvider git)
+        public MainWindow(IssueProvider git, string provider)
         {
+            
             gith = git;
             InitializeComponent();
             repos = gith.getRepos();
@@ -74,16 +75,6 @@ namespace IssueMenagment
             else
             {
                 IssueBox.Items.Add("brak Issue do wyświetlenia");
-            }
-        }
-
-        private void ImportButton_Click(object sender, RoutedEventArgs e)
-        {
-            DBL dbl = new DBL();
-            List<Issue> iss = dbl.importDB(@"C:\Users\zigus\Downloads\Issues.db");
-            foreach (Issue issue in iss)
-            {
-                IssueBox.Items.Add(issue.title);
             }
         }
     }
