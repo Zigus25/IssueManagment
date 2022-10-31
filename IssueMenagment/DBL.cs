@@ -1,6 +1,5 @@
 ﻿using LiteDB;
 using System.Collections.Generic;
-using System.Windows;
 
 namespace IssueMenagment
 {

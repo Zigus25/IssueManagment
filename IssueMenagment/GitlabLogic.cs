@@ -2,23 +2,25 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace IssueMenagment
 {
-    public class GithubLogic : IssueProvider
+    public class GitlabLogic : IssueProvider
     {
-        public string Login, Token, Encoded;
-        Provider github = new Provider
+        public string Login, Token, id;
+        Provider gitlab = new Provider
         {
-            Name = "GitHub",
-            aout = "https://api.github.com/user",
-            getrepo = "https://api.github.com/users/LOGIN/repos",
-            getissue = "https://api.github.com/repos/LOGIN/REPO/issues",
-            createupdate = "https://api.github.com/repos/LOGIN/REPO/issues"
+            Name = "GitLab",
+            aout = "https://gitlab.com/api/v4/user",
+            getrepo = "https://gitlab.com/api/v4/users/ID/projects",
+            getissue = "https://gitlab.com/api/v4/projects/ProjectID/issues",
+            createupdate = "https://gitlab.com/api/v4/projects/ID/issues"
         };
-        
         public string authentication(string login, string token)
         {
             Login = login;
@@ -27,12 +29,13 @@ namespace IssueMenagment
             {
                 using (var client = new HttpClient())
                 {
-                   
-                    var request = new HttpRequestMessage(HttpMethod.Get, github.aout);
-                    Encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(login + ":" + token));
-                    request.Headers.Add("Authorization", "Basic " + Encoded);
+
+                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.aout);
+                    request.Headers.Add("Authorization", "Bearer " + token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
                     var res = client.Send(request);
+                    dynamic d = JsonConvert.DeserializeObject(res.Content.ReadAsStringAsync().Result);
+                    id = d.id;
                     return (res.Content.ReadAsStringAsync().Result);
                 }
             }
@@ -43,14 +46,15 @@ namespace IssueMenagment
                 return "error";
             }
         }
+
         public List<Issue> getIssues(Repo repo)
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, github.getissue.Replace("LOGIN",Login).Replace("REPO",repo.name));
-                    request.Headers.Add("Authorization", "Basic " + Encoded);
+                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.getissue.Replace("ProjectID", repo.id.ToString()));
+                    request.Headers.Add("Authorization", "Bearer " + Token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
 
                     var res = client.Send(request);
@@ -58,7 +62,7 @@ namespace IssueMenagment
                     List<Issue> issues = new List<Issue>();
                     foreach (dynamic ob in d)
                     {
-                        issues.Add(new Issue { number = (int)ob.number, title = (string)ob.title, body = (string)ob.body});
+                        issues.Add(new Issue { number = (int)ob.iid, title = (string)ob.title, body = (string)ob.description });
                     }
                     return issues;
                 }
@@ -77,16 +81,17 @@ namespace IssueMenagment
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, github.getrepo.Replace("LOGIN",Login));
+                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.getrepo.Replace("ID",id));
+                    request.Headers.Add("Authorization", "Bearer " + Token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
                     List<Repo> repos = new List<Repo>();
                     var res = client.Send(request);
                     var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
-                    foreach(dynamic ob in d)
+                    foreach (dynamic ob in d)
                     {
-                        repos.Add(new Repo() { name = (string)ob.name ,id = (int)ob.id});
+                        MessageBox.Show(ob.id.ToString());
+                        repos.Add(new Repo { name = (string)ob.name, id = ob.id});
                     }
-                    
                     return (repos);
                 }
             }
@@ -102,17 +107,25 @@ namespace IssueMenagment
         {
             try
             {
-                string url = github.createupdate.Replace("LOGIN", Login).Replace("REPO", repo.name);
-                if (repo.id != -1)
-                {
-                    url = url+ "/" + repo.id;
-                }
+                
                 using (var clinet = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Post, url);
-                    request.Headers.Add("Authorization", "Basic " + Encoded);
+                    HttpRequestMessage request;
+                    string url = gitlab.createupdate.Replace("ID", repo.id.ToString());
+                    if (id != -1)
+                    {
+                        url = url + "/" + id;
+                        url = url + "?title=" + title + "&description=" + descr;
+                        request = new HttpRequestMessage(HttpMethod.Put, url);
+                    }
+                    else
+                    {
+                        url = url + "?title=" + title + "&description=" + descr;
+                        request = new HttpRequestMessage(HttpMethod.Post, url);
+                    }
+                    MessageBox.Show(url);
+                    request.Headers.Add("Authorization", "Bearer " + Token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
-                    request.Content = new StringContent("{\"title\":\"" + title + "\",\"body\":\"" + descr + "\"}", Encoding.UTF8, "application/json");
                     clinet.Send(request);
                 }
             }
@@ -120,6 +133,7 @@ namespace IssueMenagment
             {
                 Console.WriteLine("\nException Caught!");
                 Console.WriteLine("Message :{0} ", ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
     }

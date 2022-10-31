@@ -7,16 +7,17 @@ namespace IssueMenagment
 {
     public partial class MainWindow : Window
     {
+        List<Repo> repos = new List<Repo>();
         List<Issue> issues;
-        GithubLogic gith;
-        public MainWindow(GithubLogic git)
+        IssueProvider gith;
+        public MainWindow(IssueProvider git)
         {
             gith = git;
             InitializeComponent();
-            var repos = gith.getRepos();
-            foreach (string name in repos)
+            repos = gith.getRepos();
+            foreach (Repo repo in repos)
             {
-                ReposChoose.Items.Add(name);
+                ReposChoose.Items.Add(repo.name);
             }
         }
 
@@ -49,11 +50,11 @@ namespace IssueMenagment
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             int num = -1;
-            if(IssueBox.SelectedIndex != -1)
+            if (IssueBox.SelectedIndex != -1)
             {
                 num = issues[IssueBox.SelectedIndex].number;
             }
-            gith.Issue(ReposChoose.SelectedValue.ToString(),num,NameInpute.Text,DescInpute.Text);
+            gith.Issue(repos[ReposChoose.SelectedIndex],num ,NameInpute.Text,DescInpute.Text);
             NameInpute.Text = "";
             DescInpute.Text = "";
             refeshIssueBox();
@@ -62,7 +63,7 @@ namespace IssueMenagment
         public void refeshIssueBox()
         {
             IssueBox.Items.Clear();
-            issues = gith.getIssues(ReposChoose.SelectedValue.ToString());
+            issues = gith.getIssues(repos[ReposChoose.SelectedIndex]);
             if (issues != null)
             {
                 foreach (Issue issue in issues)
