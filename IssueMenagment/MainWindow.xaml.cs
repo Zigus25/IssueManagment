@@ -38,6 +38,16 @@ namespace IssueMenagment
 
         private void IssueBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (IssueBox.SelectedIndex != -1)
+            {
+                Add.Visibility = Visibility.Collapsed;
+                Save.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Add.Visibility = Visibility.Visible;
+                Save.Visibility = Visibility.Collapsed;
+            }
             var i = IssueBox.SelectedIndex;
             try
             {
@@ -74,12 +84,7 @@ namespace IssueMenagment
         {
             try
             {
-                int num = -1;
-                if (IssueBox.SelectedIndex != -1)
-                {
-                    num = issues[IssueBox.SelectedIndex].Number;
-                }
-                gith.issue(repos[ReposChoose.SelectedIndex], num, NameInpute.Text, DescInpute.Text);
+                gith.issue(repos[ReposChoose.SelectedIndex], (int)issues[IssueBox.SelectedIndex].Number, NameInpute.Text, DescInpute.Text);
                 NameInpute.Text = "";
                 DescInpute.Text = "";
                 refeshIssueBox();
@@ -120,6 +125,21 @@ namespace IssueMenagment
             var newForm = new LoginWindow();
             newForm.Show();
             this.Close();
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                gith.issue(repos[ReposChoose.SelectedIndex], -1, NameInpute.Text, DescInpute.Text);
+                NameInpute.Text = "";
+                DescInpute.Text = "";
+                refeshIssueBox();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

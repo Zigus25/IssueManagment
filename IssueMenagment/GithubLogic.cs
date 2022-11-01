@@ -97,10 +97,11 @@ namespace IssueMenagment
 
         public void issue(Repo repo,int id, string title, string descr)
         {
+            IssueRequest iss = new IssueRequest { title = title, body = descr };
             try
             {
                 string url = github.CreateUpdate.Replace("LOGIN", Login).Replace("REPO", repo.Name);
-                if (repo.ID != -1)
+                if (id != -1)
                 {
                     url = url+ "/" + id;
                 }
@@ -109,7 +110,7 @@ namespace IssueMenagment
                     var request = new HttpRequestMessage(HttpMethod.Post, url);
                     request.Headers.Add("Authorization", "Basic " + Encoded);
                     request.Headers.Add("User-Agent", "IssueMenagment");
-                    request.Content = new StringContent("{\"title\":\"" + title + "\",\"body\":\"" + descr + "\"}", Encoding.UTF8, "application/json");
+                    request.Content = new StringContent(JsonConvert.SerializeObject(iss), Encoding.UTF8, "application/json");
                     clinet.Send(request);
                 }
             }
