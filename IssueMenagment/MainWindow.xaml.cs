@@ -77,5 +77,12 @@ namespace IssueMenagment
                 IssueBox.Items.Add("brak Issue do wyświetlenia");
             }
         }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            var newForm = new LoginWindow();
+            newForm.Show();
+            this.Close();
+        }
     }
 }

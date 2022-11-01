@@ -71,11 +71,10 @@ namespace IssueMenagment
             var col = db.GetCollection<Issue>("Issues");
             if (id == -1)
             {
-                col.Insert(new Issue { number = 1, title = title, body = descr });
+                col.Insert(new Issue { number = col.Count()+1, title = title, body = descr });
             }
             else
             {
-                MessageBox.Show(title);
                 Issue issue = col.Query().Where(x => x.number == id).ToList()[0];
                 issue.title = title;
                 issue.body = descr;
