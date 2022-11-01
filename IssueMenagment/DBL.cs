@@ -1,6 +1,7 @@
 ﻿using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 
@@ -14,7 +15,7 @@ namespace IssueMenagment
             try
             {
                 db = new LiteDatabase(login);
-                var col = db.GetCollection<Issue>("Issues");
+                var col = db.GetCollectionNames();
                 var res = col.Count();
                 if(res > 0)
                 {
@@ -31,11 +32,11 @@ namespace IssueMenagment
             }
         }
 
-        public void createDB(string path,List<Issue> issues)
+        public void createDB(string path,List<Issue> issues, Repo repo)
         {
             using(var db = new LiteDatabase(path))
             {
-                var col = db.GetCollection<Issue>("Issues");
+                var col = db.GetCollection<Issue>(repo.name);
                 foreach (var issue in issues)
                 {
                     col.Insert(issue);
@@ -68,7 +69,7 @@ namespace IssueMenagment
 
         public void Issue(Repo repo, int id, string title, string descr)
         {
-            var col = db.GetCollection<Issue>("Issues");
+            var col = db.GetCollection<Issue>(repo.name);
             if (id == -1)
             {
                 col.Insert(new Issue { number = col.Count()+1, title = title, body = descr });

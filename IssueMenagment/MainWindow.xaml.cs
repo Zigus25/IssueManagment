@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -44,8 +46,14 @@ namespace IssueMenagment
 
         private void ExportujButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO doać wybór ścieżki
-            new DBL().createDB(@"C:\Users\zigus\Downloads\Issues.db",issues);
+            SaveFileDialog ofd = new SaveFileDialog();
+            ofd.FileName = "Issues";
+            ofd.DefaultExt = ".db";
+            ofd.Filter = "DB files|*.db";
+            if (ofd.ShowDialog() == true)
+            {
+                new DBL().createDB(ofd.FileName, issues,new Repo { name = ReposChoose.SelectedValue.ToString(), id = 1 });
+            }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

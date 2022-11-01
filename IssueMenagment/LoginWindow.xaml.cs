@@ -51,14 +51,17 @@ namespace IssueMenagment
                         break;
                     case "DataBase":
                         OpenFileDialog ofd = new OpenFileDialog();
-                        ofd.ShowDialog();
+                        ofd.Filter = "DB files|*.db";
                         DBL dbl = new DBL();
-                        var res = dbl.authentication(@"C:\Users\zigus\Downloads\Issues.db", "");
-                        if(res == "Istnieje")
+                        if (ofd.ShowDialog() == true)
                         {
-                            var newForm = new MainWindow(dbl, provider);
-                            newForm.Show();
-                            this.Close();
+                            var res = dbl.authentication(ofd.FileName, "");
+                            if (res == "Istnieje")
+                            {
+                                var newForm = new MainWindow(dbl, provider);
+                                newForm.Show();
+                                this.Close();
+                            }
                         }
                         break;
                 }
