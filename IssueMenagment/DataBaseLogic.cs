@@ -6,7 +6,7 @@ using System.Windows;
 
 namespace IssueMenagment
 {
-    public class DBL: IssueProvider
+    public class DataBaseLogic: IssueProvider
     {
         LiteDatabase db;
         public string authentication(string login, string token)
@@ -38,7 +38,7 @@ namespace IssueMenagment
             {
                 using (var db = new LiteDatabase(path))
                 {
-                    var col = db.GetCollection<Issue>(repo.name);
+                    var col = db.GetCollection<Issue>(repo.Name);
                     foreach (var issue in issues)
                     {
                         col.Insert(issue);
@@ -56,7 +56,7 @@ namespace IssueMenagment
             try
             {
                 List<Issue> issues = new List<Issue>();
-                var col = db.GetCollection<Issue>(repo.name);
+                var col = db.GetCollection<Issue>(repo.Name);
                 var res = col.FindAll();
                 foreach (var issue in res)
                 {
@@ -79,7 +79,7 @@ namespace IssueMenagment
                 var col = db.GetCollectionNames();
                 foreach (var colName in col)
                 {
-                    repos.Add(new Repo { name = (string)colName, id = 1 });
+                    repos.Add(new Repo { Name = (string)colName, ID = 1 });
                 }
                 return repos;
             }
@@ -90,19 +90,19 @@ namespace IssueMenagment
             }
         }
 
-        public void Issue(Repo repo, int id, string title, string descr)
+        public void issue(Repo repo, int id, string title, string descr)
         {
             try
             {
-                var col = db.GetCollection<Issue>(repo.name);
+                var col = db.GetCollection<Issue>(repo.Name);
                 if (id == -1)
                 {
-                    col.Insert(new Issue { number = col.Count() + 1, title = title, body = descr });
+                    col.Insert(new Issue { Number = col.Count() + 1, Title = title, body = descr });
                 }
                 else
                 {
-                    Issue issue = col.Query().Where(x => x.number == id).ToList()[0];
-                    issue.title = title;
+                    Issue issue = col.Query().Where(x => x.Number == id).ToList()[0];
+                    issue.Title = title;
                     issue.body = descr;
                     col.Update(issue);
                 }

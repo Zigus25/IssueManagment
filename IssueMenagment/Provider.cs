@@ -3,9 +3,9 @@
     public class Provider
     {
         public string Name { get; set; }
-        public string aout { get; set; }
-        public string getrepo { get; set; }
-        public string getissue { get; set; }
-        public string createupdate { get; set; }
+        public string Aout { get; set; }
+        public string GetRepo { get; set; }
+        public string GetIssue { get; set; }
+        public string CreateUpdate { get; set; }
     }
 }

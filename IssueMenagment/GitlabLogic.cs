@@ -12,10 +12,10 @@ namespace IssueMenagment
         Provider gitlab = new Provider
         {
             Name = "GitLab",
-            aout = "https://gitlab.com/api/v4/user",
-            getrepo = "https://gitlab.com/api/v4/users/ID/projects",
-            getissue = "https://gitlab.com/api/v4/projects/ProjectID/issues",
-            createupdate = "https://gitlab.com/api/v4/projects/ID/issues"
+            Aout = "https://gitlab.com/api/v4/user",
+            GetRepo = "https://gitlab.com/api/v4/users/ID/projects",
+            GetIssue = "https://gitlab.com/api/v4/projects/ProjectID/issues",
+            CreateUpdate = "https://gitlab.com/api/v4/projects/ID/issues"
         };
         public string authentication(string login, string token)
         {
@@ -26,7 +26,7 @@ namespace IssueMenagment
                 using (var client = new HttpClient())
                 {
 
-                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.aout);
+                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.Aout);
                     request.Headers.Add("Authorization", "Bearer " + token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
                     var res = client.Send(request);
@@ -48,7 +48,7 @@ namespace IssueMenagment
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.getissue.Replace("ProjectID", repo.id.ToString()));
+                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.GetIssue.Replace("ProjectID", repo.ID.ToString()));
                     request.Headers.Add("Authorization", "Bearer " + Token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
 
@@ -57,7 +57,7 @@ namespace IssueMenagment
                     List<Issue> issues = new List<Issue>();
                     foreach (dynamic ob in d)
                     {
-                        issues.Add(new Issue { number = (int)ob.iid, title = (string)ob.title, body = (string)ob.description });
+                        issues.Add(new Issue { Number = (int)ob.iid, Title = (string)ob.title, body = (string)ob.description });
                     }
                     return issues;
                 }
@@ -75,7 +75,7 @@ namespace IssueMenagment
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.getrepo.Replace("ID",id));
+                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.GetRepo.Replace("ID",id));
                     request.Headers.Add("Authorization", "Bearer " + Token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
                     List<Repo> repos = new List<Repo>();
@@ -84,7 +84,7 @@ namespace IssueMenagment
                     foreach (dynamic ob in d)
                     {
                         MessageBox.Show(ob.id.ToString());
-                        repos.Add(new Repo { name = (string)ob.name, id = ob.id});
+                        repos.Add(new Repo { Name = (string)ob.name, ID = ob.id});
                     }
                     return (repos);
                 }
@@ -96,7 +96,7 @@ namespace IssueMenagment
             }
         }
 
-        public void Issue(Repo repo,int id, string title, string descr)
+        public void issue(Repo repo,int id, string title, string descr)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace IssueMenagment
                 using (var clinet = new HttpClient())
                 {
                     HttpRequestMessage request;
-                    string url = gitlab.createupdate.Replace("ID", repo.id.ToString());
+                    string url = gitlab.CreateUpdate.Replace("ID", repo.ID.ToString());
                     if (id != -1)
                     {
                         url = url + "/" + id;

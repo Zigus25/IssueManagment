@@ -60,7 +60,7 @@ namespace IssueMenagment
                     case "DataBase":
                         OpenFileDialog ofd = new OpenFileDialog();
                         ofd.Filter = "DB files|*.db";
-                        DBL dbl = new DBL();
+                        DataBaseLogic dbl = new DataBaseLogic();
                         if (ofd.ShowDialog() == true)
                         {
                             var res = dbl.authentication(ofd.FileName, "");

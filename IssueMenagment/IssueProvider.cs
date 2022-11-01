@@ -7,6 +7,6 @@ namespace IssueMenagment
         public string authentication(string login, string token);
         List<Repo> getRepos();
         List<Issue> getIssues(Repo repo);
-        void Issue(Repo repo, int id, string title, string descr);
+        void issue(Repo repo, int id, string title, string descr);
     }
 }

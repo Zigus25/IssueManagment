@@ -22,7 +22,7 @@ namespace IssueMenagment
             {
                 foreach (Repo repo in repos)
                 {
-                    ReposChoose.Items.Add(repo.name);
+                    ReposChoose.Items.Add(repo.Name);
                 }
             }
             else
@@ -41,7 +41,7 @@ namespace IssueMenagment
             var i = IssueBox.SelectedIndex;
             try
             {
-                NameInpute.Text = issues[i].title;
+                NameInpute.Text = issues[i].Title;
                 DescInpute.Text = issues[i].body;
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace IssueMenagment
             {
                 try
                 {
-                    new DBL().createDB(ofd.FileName, issues, new Repo { name = ReposChoose.SelectedValue.ToString(), id = 1 });
+                    new DataBaseLogic().createDB(ofd.FileName, issues, new Repo { Name = ReposChoose.SelectedValue.ToString(), ID = 1 });
                 }
                 catch(Exception ex)
                 {
@@ -77,7 +77,7 @@ namespace IssueMenagment
                 int num = -1;
                 if (IssueBox.SelectedIndex != -1)
                 {
-                    num = issues[IssueBox.SelectedIndex].number;
+                    num = issues[IssueBox.SelectedIndex].Number;
                 }
                 gith.Issue(repos[ReposChoose.SelectedIndex], num, NameInpute.Text, DescInpute.Text);
                 NameInpute.Text = "";
@@ -100,7 +100,7 @@ namespace IssueMenagment
                 {
                     foreach (Issue issue in issues)
                     {
-                        IssueBox.Items.Add(issue.title);
+                        IssueBox.Items.Add(issue.Title);
                     }
                 }
                 else
