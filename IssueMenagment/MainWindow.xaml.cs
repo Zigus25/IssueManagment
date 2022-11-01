@@ -18,9 +18,16 @@ namespace IssueMenagment
             gith = git;
             InitializeComponent();
             repos = gith.getRepos();
-            foreach (Repo repo in repos)
+            if (repos != null)
             {
-                ReposChoose.Items.Add(repo.name);
+                foreach (Repo repo in repos)
+                {
+                    ReposChoose.Items.Add(repo.name);
+                }
+            }
+            else
+            {
+                ReposChoose.Items.Add("Brak  repo do pokazania");
             }
         }
 
@@ -52,37 +59,58 @@ namespace IssueMenagment
             ofd.Filter = "DB files|*.db";
             if (ofd.ShowDialog() == true)
             {
-                new DBL().createDB(ofd.FileName, issues,new Repo { name = ReposChoose.SelectedValue.ToString(), id = 1 });
+                try
+                {
+                    new DBL().createDB(ofd.FileName, issues, new Repo { name = ReposChoose.SelectedValue.ToString(), id = 1 });
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            int num = -1;
-            if (IssueBox.SelectedIndex != -1)
+            try
             {
-                num = issues[IssueBox.SelectedIndex].number;
+                int num = -1;
+                if (IssueBox.SelectedIndex != -1)
+                {
+                    num = issues[IssueBox.SelectedIndex].number;
+                }
+                gith.Issue(repos[ReposChoose.SelectedIndex], num, NameInpute.Text, DescInpute.Text);
+                NameInpute.Text = "";
+                DescInpute.Text = "";
+                refeshIssueBox();
             }
-            gith.Issue(repos[ReposChoose.SelectedIndex],num ,NameInpute.Text,DescInpute.Text);
-            NameInpute.Text = "";
-            DescInpute.Text = "";
-            refeshIssueBox();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void refeshIssueBox()
         {
             IssueBox.Items.Clear();
-            issues = gith.getIssues(repos[ReposChoose.SelectedIndex]);
-            if (issues != null)
+            try
             {
-                foreach (Issue issue in issues)
+                issues = gith.getIssues(repos[ReposChoose.SelectedIndex]);
+                if (issues != null)
                 {
-                    IssueBox.Items.Add(issue.title);
+                    foreach (Issue issue in issues)
+                    {
+                        IssueBox.Items.Add(issue.title);
+                    }
+                }
+                else
+                {
+                    IssueBox.Items.Add("brak Issue do wyświetlenia");
                 }
             }
-            else
+            catch(Exception ex)
             {
-                IssueBox.Items.Add("brak Issue do wyświetlenia");
+                MessageBox.Show(ex.Message);
             }
         }
 

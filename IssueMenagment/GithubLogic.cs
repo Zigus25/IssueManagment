@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Windows;
 
 namespace IssueMenagment
 {
@@ -37,8 +38,7 @@ namespace IssueMenagment
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
+                MessageBox.Show(ex.Message);
                 return "error";
             }
         }
@@ -64,8 +64,7 @@ namespace IssueMenagment
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
+                MessageBox.Show(ex.Message);
                 return null;
             }
         }
@@ -91,8 +90,7 @@ namespace IssueMenagment
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
+                MessageBox.Show(ex.Message);
                 return null;
             }
         }
@@ -117,8 +115,7 @@ namespace IssueMenagment
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
     }

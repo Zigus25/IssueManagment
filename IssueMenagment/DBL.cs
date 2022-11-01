@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace IssueMenagment
 {
@@ -26,58 +27,89 @@ namespace IssueMenagment
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 return null;
             }
         }
 
         public void createDB(string path,List<Issue> issues, Repo repo)
         {
-            using(var db = new LiteDatabase(path))
+            try
             {
-                var col = db.GetCollection<Issue>(repo.name);
-                foreach (var issue in issues)
+                using (var db = new LiteDatabase(path))
                 {
-                    col.Insert(issue);
+                    var col = db.GetCollection<Issue>(repo.name);
+                    foreach (var issue in issues)
+                    {
+                        col.Insert(issue);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
         public List<Issue> getIssues(Repo repo)
         {
-            List<Issue> issues = new List<Issue>();
-            var col = db.GetCollection<Issue>(repo.name);
-            var res = col.FindAll();
-            foreach (var issue in res)
+            try
             {
-                issues.Add(issue);
+                List<Issue> issues = new List<Issue>();
+                var col = db.GetCollection<Issue>(repo.name);
+                var res = col.FindAll();
+                foreach (var issue in res)
+                {
+                    issues.Add(issue);
+                }
+                return issues;
             }
-            return issues;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
         public List<Repo> getRepos()
         {
-            List<Repo> repos = new List<Repo>();
-            var col = db.GetCollectionNames();
-            foreach(var colName in col)
+            try
             {
-                repos.Add(new Repo { name = (string)colName, id = 1 });
+                List<Repo> repos = new List<Repo>();
+                var col = db.GetCollectionNames();
+                foreach (var colName in col)
+                {
+                    repos.Add(new Repo { name = (string)colName, id = 1 });
+                }
+                return repos;
             }
-            return repos;
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
         public void Issue(Repo repo, int id, string title, string descr)
         {
-            var col = db.GetCollection<Issue>(repo.name);
-            if (id == -1)
+            try
             {
-                col.Insert(new Issue { number = col.Count()+1, title = title, body = descr });
+                var col = db.GetCollection<Issue>(repo.name);
+                if (id == -1)
+                {
+                    col.Insert(new Issue { number = col.Count() + 1, title = title, body = descr });
+                }
+                else
+                {
+                    Issue issue = col.Query().Where(x => x.number == id).ToList()[0];
+                    issue.title = title;
+                    issue.body = descr;
+                    col.Update(issue);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Issue issue = col.Query().Where(x => x.number == id).ToList()[0];
-                issue.title = title;
-                issue.body = descr;
-                col.Update(issue);
+                MessageBox.Show(ex.Message);
             }
         }
     }

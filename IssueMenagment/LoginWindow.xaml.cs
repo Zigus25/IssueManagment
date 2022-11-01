@@ -33,6 +33,10 @@ namespace IssueMenagment
                                 newForm.Show();
                                 this.Close();
                             }
+                            else
+                            {
+                                ErrorMess.Content = "Konto o podanych danych nie istnije lub nie udało się z nim komunikować";
+                            }
                         }
                         break;
                     case "GitLab":
@@ -46,6 +50,10 @@ namespace IssueMenagment
                                 var newForm = new MainWindow(aoutGL, provider);
                                 newForm.Show();
                                 this.Close();
+                            }
+                            else
+                            {
+                                ErrorMess.Content = "Konto o podanych danych nie istnije lub nie udało się z nim komunikować";
                             }
                         }
                         break;
@@ -61,6 +69,10 @@ namespace IssueMenagment
                                 var newForm = new MainWindow(dbl, provider);
                                 newForm.Show();
                                 this.Close();
+                            }
+                            else
+                            {
+                                ErrorMess.Content = "Nie udało się otworzyć bazy danych";
                             }
                         }
                         break;
