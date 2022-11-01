@@ -57,7 +57,7 @@ namespace IssueMenagment
                     List<Issue> issues = new List<Issue>();
                     foreach (dynamic ob in d)
                     {
-                        issues.Add(new Issue { Number = (int)ob.number, Title = (string)ob.title, body = (string)ob.body});
+                        issues.Add(new Issue { Number = (int)ob.number, Title = (string)ob.title, Body = (string)ob.body});
                     }
                     return issues;
                 }
@@ -102,7 +102,7 @@ namespace IssueMenagment
                 string url = github.CreateUpdate.Replace("LOGIN", Login).Replace("REPO", repo.Name);
                 if (repo.ID != -1)
                 {
-                    url = url+ "/" + repo.ID;
+                    url = url+ "/" + id;
                 }
                 using (var clinet = new HttpClient())
                 {
@@ -117,6 +117,12 @@ namespace IssueMenagment
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        public void endConnection()
+        {
+            Login = "";
+            Token = "";
+            Encoded = "";
         }
     }
 }

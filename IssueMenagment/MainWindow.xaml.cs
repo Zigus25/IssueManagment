@@ -42,7 +42,7 @@ namespace IssueMenagment
             try
             {
                 NameInpute.Text = issues[i].Title;
-                DescInpute.Text = issues[i].body;
+                DescInpute.Text = issues[i].Body;
             }
             catch (Exception ex)
             {
@@ -79,7 +79,7 @@ namespace IssueMenagment
                 {
                     num = issues[IssueBox.SelectedIndex].Number;
                 }
-                gith.Issue(repos[ReposChoose.SelectedIndex], num, NameInpute.Text, DescInpute.Text);
+                gith.issue(repos[ReposChoose.SelectedIndex], num, NameInpute.Text, DescInpute.Text);
                 NameInpute.Text = "";
                 DescInpute.Text = "";
                 refeshIssueBox();
@@ -116,6 +116,7 @@ namespace IssueMenagment
 
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
+            gith.endConnection();
             var newForm = new LoginWindow();
             newForm.Show();
             this.Close();

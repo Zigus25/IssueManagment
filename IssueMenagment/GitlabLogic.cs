@@ -57,7 +57,7 @@ namespace IssueMenagment
                     List<Issue> issues = new List<Issue>();
                     foreach (dynamic ob in d)
                     {
-                        issues.Add(new Issue { Number = (int)ob.iid, Title = (string)ob.title, body = (string)ob.description });
+                        issues.Add(new Issue { Number = (int)ob.iid, Title = (string)ob.title, Body = (string)ob.description });
                     }
                     return issues;
                 }
@@ -83,7 +83,6 @@ namespace IssueMenagment
                     var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
                     foreach (dynamic ob in d)
                     {
-                        MessageBox.Show(ob.id.ToString());
                         repos.Add(new Repo { Name = (string)ob.name, ID = ob.id});
                     }
                     return (repos);
@@ -116,7 +115,6 @@ namespace IssueMenagment
                         url = url + "?title=" + title + "&description=" + descr;
                         request = new HttpRequestMessage(HttpMethod.Post, url);
                     }
-                    MessageBox.Show(url);
                     request.Headers.Add("Authorization", "Bearer " + Token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
                     clinet.Send(request);
@@ -126,6 +124,13 @@ namespace IssueMenagment
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public void endConnection()
+        {
+            Login = "";
+            Token = "";
+            id = "";
         }
     }
 }

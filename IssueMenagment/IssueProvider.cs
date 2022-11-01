@@ -8,5 +8,7 @@ namespace IssueMenagment
         List<Repo> getRepos();
         List<Issue> getIssues(Repo repo);
         void issue(Repo repo, int id, string title, string descr);
+
+        void endConnection();
     }
 }

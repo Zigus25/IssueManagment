@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace IssueMenagment
                     {
                         col.Insert(issue);
                     }
+                    MessageBox.Show("Wyeksportowano do pliku");
                 }
             }
             catch (Exception ex)
@@ -97,13 +99,13 @@ namespace IssueMenagment
                 var col = db.GetCollection<Issue>(repo.Name);
                 if (id == -1)
                 {
-                    col.Insert(new Issue { Number = col.Count() + 1, Title = title, body = descr });
+                    col.Insert(new Issue { Number = col.Count() + 1, Title = title, Body = descr });
                 }
                 else
                 {
                     Issue issue = col.Query().Where(x => x.Number == id).ToList()[0];
                     issue.Title = title;
-                    issue.body = descr;
+                    issue.Body = descr;
                     col.Update(issue);
                 }
             }
@@ -111,6 +113,11 @@ namespace IssueMenagment
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        public void endConnection()
+        {
+            db.Dispose();
         }
     }
 }
