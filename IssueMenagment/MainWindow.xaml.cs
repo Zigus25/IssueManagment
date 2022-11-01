@@ -40,12 +40,10 @@ namespace IssueMenagment
         {
             if (IssueBox.SelectedIndex != -1)
             {
-                Add.Visibility = Visibility.Collapsed;
                 Save.Visibility = Visibility.Visible;
             }
             else
             {
-                Add.Visibility = Visibility.Visible;
                 Save.Visibility = Visibility.Collapsed;
             }
             var i = IssueBox.SelectedIndex;
