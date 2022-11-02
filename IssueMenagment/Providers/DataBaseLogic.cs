@@ -118,7 +118,14 @@ namespace IssueManagment.Providers
 
         public void endConnection()
         {
-            db.Dispose();
+            try
+            {
+                db.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
