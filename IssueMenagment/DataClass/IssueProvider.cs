@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IssueMenagment
+namespace IssueManagment.DataClass
 {
     public interface IssueProvider
     {

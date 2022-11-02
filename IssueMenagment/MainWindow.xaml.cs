@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using IssueManagment.DataClass;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;

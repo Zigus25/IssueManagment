@@ -1,6 +1,6 @@
 ﻿using LiteDB;
 
-namespace IssueMenagment
+namespace IssueManagment.DataClass
 {
     public class Issue
     {

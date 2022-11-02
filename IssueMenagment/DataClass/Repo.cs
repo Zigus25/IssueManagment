@@ -1,4 +1,4 @@
-﻿namespace IssueMenagment
+﻿namespace IssueManagment.DataClass
 {
     public class Repo
     {

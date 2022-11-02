@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using IssueManagment.DataClass;
+using LiteDB;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
