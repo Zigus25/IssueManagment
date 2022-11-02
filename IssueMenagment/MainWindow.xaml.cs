@@ -1,7 +1,9 @@
 ﻿using IssueManagment.DataClass;
+using IssueManagment.Providers;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +17,7 @@ namespace IssueMenagment
         IssueProvider gith;
         public MainWindow(IssueProvider git, string provider)
         {
-            
+
             gith = git;
             InitializeComponent();
             repos = gith.getRepos();
@@ -56,7 +58,7 @@ namespace IssueMenagment
             catch (Exception ex)
             {
                 NameInpute.Text = "";
-                DescInpute.Text = ""    ;
+                DescInpute.Text = "";
             }
         }
 
@@ -72,7 +74,7 @@ namespace IssueMenagment
                 {
                     new DataBaseLogic().createDB(ofd.FileName, issues, new Repo { Name = ReposChoose.SelectedValue.ToString(), ID = 1 });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
@@ -112,7 +114,7 @@ namespace IssueMenagment
                     IssueBox.Items.Add("brak Issue do wyświetlenia");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

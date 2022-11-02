@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace IssueMenagment
+namespace IssueManagment.Providers
 {
-    public class DataBaseLogic: IssueProvider
+    public class DataBaseLogic : IssueProvider
     {
         LiteDatabase db;
         public string authentication(string login, string token)
@@ -18,7 +18,7 @@ namespace IssueMenagment
                 db = new LiteDatabase(login);
                 var col = db.GetCollectionNames();
                 var res = col.Count();
-                if(res > 0)
+                if (res > 0)
                 {
                     return "Istnieje";
                 }
@@ -34,7 +34,7 @@ namespace IssueMenagment
             }
         }
 
-        public void createDB(string path,List<Issue> issues, Repo repo)
+        public void createDB(string path, List<Issue> issues, Repo repo)
         {
             try
             {
@@ -82,11 +82,11 @@ namespace IssueMenagment
                 var col = db.GetCollectionNames();
                 foreach (var colName in col)
                 {
-                    repos.Add(new Repo { Name = (string)colName, ID = 1 });
+                    repos.Add(new Repo { Name = colName, ID = 1 });
                 }
                 return repos;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 return null;

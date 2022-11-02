@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Width="800" Height="434">
-        <ListBox x:Name="IssueBox" d:ItemsSource="{d:SampleData ItemCount=120}" Margin="0,46,636,0" SelectionChanged="IssueBox_SelectionChanged"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="397*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="IssueBox" d:ItemsSource="{d:SampleData ItemCount=120}" Margin="0,46,630,0" SelectionChanged="IssueBox_SelectionChanged"/>
         <TextBox x:Name="NameInpute" HorizontalAlignment="Left" Margin="285,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325"/>
         <TextBox x:Name="DescInpute" HorizontalAlignment="Left" Margin="285,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" Height="144" AcceptsReturn="True"/>
         <Button x:Name="Save" Content="Save" HorizontalAlignment="Left" Margin="545,360,0,0" VerticalAlignment="Top" Height="45" Width="100" Click="Save_Click" Visibility="Collapsed"/>

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Windows;
 
-namespace IssueMenagment
+namespace IssueManagment.Providers
 {
     public class GitlabLogic : IssueProvider
     {
@@ -33,7 +33,7 @@ namespace IssueMenagment
                     var res = client.Send(request);
                     dynamic d = JsonConvert.DeserializeObject(res.Content.ReadAsStringAsync().Result);
                     id = d.id;
-                    return (res.Content.ReadAsStringAsync().Result);
+                    return res.Content.ReadAsStringAsync().Result;
                 }
             }
             catch (HttpRequestException ex)
@@ -76,7 +76,7 @@ namespace IssueMenagment
             {
                 using (var client = new HttpClient())
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.GetRepo.Replace("ID",id));
+                    var request = new HttpRequestMessage(HttpMethod.Get, gitlab.GetRepo.Replace("ID", id));
                     request.Headers.Add("Authorization", "Bearer " + Token);
                     request.Headers.Add("User-Agent", "IssueMenagment");
                     List<Repo> repos = new List<Repo>();
@@ -84,9 +84,9 @@ namespace IssueMenagment
                     var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
                     foreach (dynamic ob in d)
                     {
-                        repos.Add(new Repo { Name = (string)ob.name, ID = ob.id});
+                        repos.Add(new Repo { Name = (string)ob.name, ID = ob.id });
                     }
-                    return (repos);
+                    return repos;
                 }
             }
             catch (HttpRequestException ex)
@@ -96,11 +96,11 @@ namespace IssueMenagment
             }
         }
 
-        public void issue(Repo repo,int id, string title, string descr)
+        public void issue(Repo repo, int id, string title, string descr)
         {
             try
             {
-                
+
                 using (var clinet = new HttpClient())
                 {
                     HttpRequestMessage request;
