@@ -12,6 +12,7 @@ namespace IssueManagment.Providers
     public class GithubLogic : IssueProvider
     {
         public string Login, Token, Encoded;
+        CatchMessage mesg = new CatchMessage();
         HttpClient client = new HttpClient();
         Provider github = new Provider
         {
@@ -39,7 +40,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return false;
             }
         }
@@ -60,7 +61,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return null;
             }
         }
@@ -82,7 +83,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return null;
             }
         }
@@ -103,7 +104,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
             }
         }
         public void endConnection()

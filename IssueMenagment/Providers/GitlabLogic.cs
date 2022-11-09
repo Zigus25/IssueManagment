@@ -10,6 +10,7 @@ namespace IssueManagment.Providers
     public class GitlabLogic : IssueProvider
     {
         public string Login, Token, id;
+        CatchMessage mesg = new CatchMessage();
         HttpClient client = new HttpClient();
         Provider gitlab = new Provider
         {
@@ -36,7 +37,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return false;
             }
         }
@@ -58,7 +59,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return null;
             }
         }
@@ -79,7 +80,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return null;
             }
         }
@@ -105,7 +106,7 @@ namespace IssueManagment.Providers
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
             }
         }
 

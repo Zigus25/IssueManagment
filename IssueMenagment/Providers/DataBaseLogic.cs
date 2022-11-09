@@ -1,6 +1,5 @@
 ﻿using IssueManagment.DataClass;
 using LiteDB;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,7 @@ namespace IssueManagment.Providers
     public class DataBaseLogic : IssueProvider
     {
         LiteDatabase db;
+        CatchMessage mesg = new CatchMessage();
         public bool authentication(string login, string token)
         {
             try
@@ -29,7 +29,7 @@ namespace IssueManagment.Providers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return false;
             }
         }
@@ -50,7 +50,7 @@ namespace IssueManagment.Providers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
             }
         }
 
@@ -69,7 +69,7 @@ namespace IssueManagment.Providers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return null;
             }
         }
@@ -88,7 +88,7 @@ namespace IssueManagment.Providers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
                 return null;
             }
         }
@@ -112,7 +112,7 @@ namespace IssueManagment.Providers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                 mesg.Show(ex);
             }
         }
 
@@ -124,7 +124,7 @@ namespace IssueManagment.Providers
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                mesg.Show(ex);
             }
         }
     }
