@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 
@@ -11,6 +12,7 @@ namespace IssueManagment.Providers
     public class GithubLogic : IssueProvider
     {
         public string Login, Token, Encoded;
+        HttpClient client = new HttpClient();
         Provider github = new Provider
         {
             Name = "GitHub",
@@ -26,16 +28,13 @@ namespace IssueManagment.Providers
             Token = token;
             try
             {
-                using (var client = new HttpClient())
-                {
-
-                    var request = new HttpRequestMessage(HttpMethod.Get, github.Aout);
-                    Encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(login + ":" + token));
-                    request.Headers.Add("Authorization", "Basic " + Encoded);
-                    request.Headers.Add("User-Agent", "IssueMenagment");
-                    var res = client.Send(request);
-                    return res.Content.ReadAsStringAsync().Result;
-                }
+                Encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(login + ":" + token));
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"Basic {Encoded}");
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("IssueManagment", "1.1"));
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var request = new HttpRequestMessage(HttpMethod.Get, github.Aout);
+                var res = client.Send(request);
+                return res.Content.ReadAsStringAsync().Result;
             }
             catch (HttpRequestException ex)
             {
@@ -47,21 +46,16 @@ namespace IssueManagment.Providers
         {
             try
             {
-                using (var client = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, github.GetIssue.Replace("LOGIN", Login).Replace("REPO", repo.Name));
-                    request.Headers.Add("Authorization", "Basic " + Encoded);
-                    request.Headers.Add("User-Agent", "IssueMenagment");
+                var request = new HttpRequestMessage(HttpMethod.Get, github.GetIssue.Replace("LOGIN", Login).Replace("REPO", repo.Name));
 
-                    var res = client.Send(request);
-                    var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
-                    List<Issue> issues = new List<Issue>();
-                    foreach (dynamic ob in d)
-                    {
-                        issues.Add(new Issue { Number = (int)ob.number, Title = (string)ob.title, Body = (string)ob.body });
-                    }
-                    return issues;
+                var res = client.Send(request);
+                var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
+                List<Issue> issues = new List<Issue>();
+                foreach (dynamic ob in d)
+                {
+                    issues.Add(new Issue { Number = (int)ob.number, Title = (string)ob.title, Body = (string)ob.body });
                 }
+                return issues;
             }
             catch (HttpRequestException ex)
             {
@@ -74,20 +68,16 @@ namespace IssueManagment.Providers
         {
             try
             {
-                using (var client = new HttpClient())
+                var request = new HttpRequestMessage(HttpMethod.Get, github.GetRepo.Replace("LOGIN", Login));
+                List<Repo> repos = new List<Repo>();
+                var res = client.Send(request);
+                var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
+                foreach (dynamic ob in d)
                 {
-                    var request = new HttpRequestMessage(HttpMethod.Get, github.GetRepo.Replace("LOGIN", Login));
-                    request.Headers.Add("User-Agent", "IssueMenagment");
-                    List<Repo> repos = new List<Repo>();
-                    var res = client.Send(request);
-                    var d = JsonConvert.DeserializeObject<List<dynamic>>(res.Content.ReadAsStringAsync().Result);
-                    foreach (dynamic ob in d)
-                    {
-                        repos.Add(new Repo() { Name = (string)ob.name, ID = (int)ob.id });
-                    }
-
-                    return repos;
+                    repos.Add(new Repo() { Name = (string)ob.name, ID = (int)ob.id });
                 }
+
+                return repos;
             }
             catch (HttpRequestException ex)
             {
@@ -96,7 +86,7 @@ namespace IssueManagment.Providers
             }
         }
 
-        public void issue(Repo repo, int id, string title, string descr)
+        public void issueCreateUpdate(Repo repo, int id, string title, string descr)
         {
             IssueRequest iss = new IssueRequest { title = title, body = descr };
             try
@@ -106,14 +96,9 @@ namespace IssueManagment.Providers
                 {
                     url = url + "/" + id;
                 }
-                using (var clinet = new HttpClient())
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Post, url);
-                    request.Headers.Add("Authorization", "Basic " + Encoded);
-                    request.Headers.Add("User-Agent", "IssueMenagment");
-                    request.Content = new StringContent(JsonConvert.SerializeObject(iss), Encoding.UTF8, "application/json");
-                    clinet.Send(request);
-                }
+                var request = new HttpRequestMessage(HttpMethod.Post, url);
+                request.Content = new StringContent(JsonConvert.SerializeObject(iss), Encoding.UTF8, "application/json");
+                client.Send(request);
             }
             catch (HttpRequestException ex)
             {

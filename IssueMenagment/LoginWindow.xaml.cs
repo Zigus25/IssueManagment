@@ -1,4 +1,5 @@
-﻿using IssueManagment.Providers;
+﻿using IssueManagment.DataClass;
+using IssueManagment.Providers;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;

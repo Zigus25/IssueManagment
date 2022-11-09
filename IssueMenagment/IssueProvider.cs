@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using IssueManagment.DataClass;
 
-namespace IssueManagment.DataClass
+namespace IssueManagment
 {
     public interface IssueProvider
     {
         public string authentication(string login, string token);
         List<Repo> getRepos();
         List<Issue> getIssues(Repo repo);
-        void issue(Repo repo, int id, string title, string descr);
+        void issueCreateUpdate(Repo repo, int id, string title, string descr);
 
         void endConnection();
     }

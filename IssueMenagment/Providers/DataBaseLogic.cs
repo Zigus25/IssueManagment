@@ -93,7 +93,7 @@ namespace IssueManagment.Providers
             }
         }
 
-        public void issue(Repo repo, int id, string title, string descr)
+        public void issueCreateUpdate(Repo repo, int id, string title, string descr)
         {
             try
             {

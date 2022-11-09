@@ -1,4 +1,5 @@
-﻿using IssueManagment.DataClass;
+﻿using IssueManagment;
+using IssueManagment.DataClass;
 using IssueManagment.Providers;
 using Microsoft.Win32;
 using System;
@@ -85,7 +86,7 @@ namespace IssueMenagment
         {
             try
             {
-                gith.issue(repos[ReposChoose.SelectedIndex], (int)issues[IssueBox.SelectedIndex].Number, NameInpute.Text, DescInpute.Text);
+                gith.issueCreateUpdate(repos[ReposChoose.SelectedIndex], (int)issues[IssueBox.SelectedIndex].Number, NameInpute.Text, DescInpute.Text);
                 NameInpute.Text = "";
                 DescInpute.Text = "";
                 refeshIssueBox();
@@ -132,7 +133,7 @@ namespace IssueMenagment
         {
             try
             {
-                gith.issue(repos[ReposChoose.SelectedIndex], -1, NameInpute.Text, DescInpute.Text);
+                gith.issueCreateUpdate(repos[ReposChoose.SelectedIndex], -1, NameInpute.Text, DescInpute.Text);
                 NameInpute.Text = "";
                 DescInpute.Text = "";
                 refeshIssueBox();
