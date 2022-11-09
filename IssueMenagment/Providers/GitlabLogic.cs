@@ -1,10 +1,8 @@
 ﻿using IssueManagment.DataClass;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Windows;
 
 namespace IssueManagment.Providers
@@ -21,7 +19,7 @@ namespace IssueManagment.Providers
             GetIssue = "https://gitlab.com/api/v4/projects/ProjectID/issues",
             CreateUpdate = "https://gitlab.com/api/v4/projects/ID/issues"
         };
-        public string authentication(string login, string token)
+        public bool authentication(string login, string token)
         {
             Login = login;
             Token = token;
@@ -34,12 +32,12 @@ namespace IssueManagment.Providers
                 var res = client.Send(request);
                 dynamic d = JsonConvert.DeserializeObject(res.Content.ReadAsStringAsync().Result);
                 id = d.id;
-                return res.Content.ReadAsStringAsync().Result;
+                return d.d.username == login;
             }
             catch (HttpRequestException ex)
             {
                 MessageBox.Show(ex.Message);
-                return "error";
+                return false;
             }
         }
 

@@ -22,7 +22,7 @@ namespace IssueManagment.Providers
             CreateUpdate = "https://api.github.com/repos/LOGIN/REPO/issues"
         };
 
-        public string authentication(string login, string token)
+        public bool authentication(string login, string token)
         {
             Login = login;
             Token = token;
@@ -32,14 +32,15 @@ namespace IssueManagment.Providers
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"Basic {Encoded}");
                 client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("IssueManagment", "1.1"));
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var request = new HttpRequestMessage(HttpMethod.Get, github.Aout);
+                var request = new HttpRequestMessage(HttpMethod.Get, github.Aout); 
                 var res = client.Send(request);
-                return res.Content.ReadAsStringAsync().Result;
+                dynamic d = JsonConvert.DeserializeObject(res.Content.ReadAsStringAsync().Result);
+                return d.login == login;
             }
             catch (HttpRequestException ex)
             {
                 MessageBox.Show(ex.Message);
-                return "error";
+                return false;
             }
         }
         public List<Issue> getIssues(Repo repo)

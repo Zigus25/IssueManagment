@@ -11,7 +11,7 @@ namespace IssueManagment.Providers
     public class DataBaseLogic : IssueProvider
     {
         LiteDatabase db;
-        public string authentication(string login, string token)
+        public bool authentication(string login, string token)
         {
             try
             {
@@ -20,17 +20,17 @@ namespace IssueManagment.Providers
                 var res = col.Count();
                 if (res > 0)
                 {
-                    return "Istnieje";
+                    return true;
                 }
                 else
                 {
-                    return "Nie istnieje";
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                return null;
+                return false;
             }
         }
 

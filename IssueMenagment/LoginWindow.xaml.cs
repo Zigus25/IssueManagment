@@ -1,4 +1,5 @@
-﻿using IssueManagment.DataClass;
+﻿using IssueManagment;
+using IssueManagment.DataClass;
 using IssueManagment.Providers;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
@@ -10,6 +11,7 @@ namespace IssueMenagment
     public partial class LoginWindow : Window
     {
         string provider = "GitHub";
+        IssueProvider aout;
         public LoginWindow()
         {
             InitializeComponent();
@@ -24,40 +26,10 @@ namespace IssueMenagment
                 switch (provider)
                 {
                     case "GitHub":
-                        GithubLogic aoutGH = new GithubLogic();
-                        var resGH = aoutGH.authentication(login, token);
-                        if (resGH != "error")
-                        {
-                            dynamic d = JObject.Parse(resGH);
-                            if (d.login == login)
-                            {
-                                var newForm = new MainWindow(aoutGH, provider);
-                                newForm.Show();
-                                this.Close();
-                            }
-                            else
-                            {
-                                ErrorMess.Content = "Konto o podanych danych nie istnije lub nie udało się z nim komunikować";
-                            }
-                        }
+                        aout = new GithubLogic();
                         break;
                     case "GitLab":
-                        GitlabLogic aoutGL = new GitlabLogic();
-                        var resGL = aoutGL.authentication(login, token);
-                        if (resGL != "error")
-                        {
-                            dynamic d = JObject.Parse(resGL);
-                            if (d.username == login)
-                            {
-                                var newForm = new MainWindow(aoutGL, provider);
-                                newForm.Show();
-                                this.Close();
-                            }
-                            else
-                            {
-                                ErrorMess.Content = "Konto o podanych danych nie istnije lub nie udało się z nim komunikować";
-                            }
-                        }
+                        aout = new GitlabLogic();
                         break;
                     case "DataBase":
                         OpenFileDialog ofd = new OpenFileDialog();
@@ -65,8 +37,7 @@ namespace IssueMenagment
                         DataBaseLogic dbl = new DataBaseLogic();
                         if (ofd.ShowDialog() == true)
                         {
-                            var res = dbl.authentication(ofd.FileName, "");
-                            if (res == "Istnieje")
+                            if (dbl.authentication(ofd.FileName, ""))
                             {
                                 var newForm = new MainWindow(dbl, provider);
                                 newForm.Show();
@@ -78,6 +49,16 @@ namespace IssueMenagment
                             }
                         }
                         break;
+                }
+                if (aout.authentication(login, token))
+                {
+                    var newForm = new MainWindow(aout, provider);
+                    newForm.Show();
+                    this.Close();
+                }
+                else
+                {
+                    ErrorMess.Content = "Konto o podanych danych nie istnije lub nie udało się z nim komunikować";
                 }
             }
             else

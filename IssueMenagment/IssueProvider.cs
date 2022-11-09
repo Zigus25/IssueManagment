@@ -5,7 +5,7 @@ namespace IssueManagment
 {
     public interface IssueProvider
     {
-        public string authentication(string login, string token);
+        public bool authentication(string login, string token);
         List<Repo> getRepos();
         List<Issue> getIssues(Repo repo);
         void issueCreateUpdate(Repo repo, int id, string title, string descr);
