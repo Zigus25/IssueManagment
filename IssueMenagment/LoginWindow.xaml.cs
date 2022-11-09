@@ -72,10 +72,7 @@ namespace IssueMenagment
             if (provider != "GitHub")
             {
                 provider = "GitHub";
-                LoginInput.Visibility = Visibility.Visible;
-                TokenInput.Visibility = Visibility.Visible;
-                LoginLabel.Visibility = Visibility.Visible;
-                TokenLabel.Visibility = Visibility.Visible;
+                VisiblChange(true);
             }
         }
 
@@ -84,10 +81,7 @@ namespace IssueMenagment
             if (provider != "GitLab")
             {
                 provider = "GitLab";
-                LoginInput.Visibility = Visibility.Visible;
-                TokenInput.Visibility = Visibility.Visible;
-                LoginLabel.Visibility = Visibility.Visible;
-                TokenLabel.Visibility = Visibility.Visible;
+                VisiblChange(true);
             }
         }
 
@@ -96,6 +90,21 @@ namespace IssueMenagment
             if (provider != "DataBase")
             {
                 provider = "DataBase";
+                VisiblChange(false);
+            }
+        }
+
+        private void VisiblChange(bool whi) 
+        {
+            if (whi)
+            {
+                LoginInput.Visibility = Visibility.Visible;
+                TokenInput.Visibility = Visibility.Visible;
+                LoginLabel.Visibility = Visibility.Visible;
+                TokenLabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
                 LoginInput.Visibility = Visibility.Collapsed;
                 TokenInput.Visibility = Visibility.Collapsed;
                 LoginLabel.Visibility = Visibility.Collapsed;
