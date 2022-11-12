@@ -1,7 +1,9 @@
 # IssueMenagment
 ## General info
-Zadanie rekrutacyjne na stanowisko .NET Developer  
-Program zarządzający Issues
+Program zarządzający Issues w  
+* Github
+* GitLab
+* Lokalnie (LiteDB)
 ## Technologies
 * C#
 * WPF
