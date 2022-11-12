@@ -1,9 +1,9 @@
 # IssueMenagment
 ## General info
-Program zarządzający Issues w  
+Program for managing issue in:
 * Github
 * GitLab
-* Lokalnie (LiteDB)
+* Local (LiteDB)
 ## Technologies
 * C#
 * WPF
