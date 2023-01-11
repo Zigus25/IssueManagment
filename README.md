@@ -1,6 +1,6 @@
 # IssueMenagment
 ## General info
-Program for managing issue's in:
+Program for managing issues in:
 * Github
 * GitLab
 * Local (LiteDB)
